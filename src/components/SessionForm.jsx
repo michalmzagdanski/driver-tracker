@@ -20,7 +20,12 @@ function SessionForm({ onAddSession }) {
         })
     }
     function addSession() {
-        onAddSession(prev => [...prev, formData])
+        const newSession = {
+            id: crypto.randomUUID(),
+            ...formData
+        }
+
+        onAddSession(newSession)
     }
 
     return (
