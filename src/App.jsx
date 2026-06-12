@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import './App.css'
 import SessionForm from './components/SessionForm'
-import Dashboard from './components/Dashboard'
+import Stats from './components/Stats'
+import SessionList from './components/SessionList'
 
 function App() {
   const [sessions, setSessions] = useState([])
-
+  const stats = {
+    totalSessions: sessions.length
+  }
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
   }
@@ -14,7 +17,8 @@ function App() {
     <div>
       <h1>Private Driver Tracker</h1>
       <SessionForm onAddSession={addSession} />
-      <Dashboard sessions={sessions} />
+      <SessionList sessions={sessions} />
+      <Stats stats={stats} />
     </div>
   )
 }

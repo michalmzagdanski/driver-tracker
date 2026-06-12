@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
-
-function Dashboard({ sessions }) {
+function SessionList({ sessions }) {
     return (
         <div>
-            <h2>Dashboard</h2>
-            <p>Total sessions: {sessions.length}</p>
-            {sessions.map((session, index) => (
+            <h2>Sessions</h2>
+
+            {sessions.map((session) => (
                 <div key={session.id}>
                     <p>{session.date} - {session.platform} - £{session.earnings}</p>
                 </div>
@@ -16,4 +15,4 @@ function Dashboard({ sessions }) {
     )
 }
 
-export default Dashboard
+export default SessionList
