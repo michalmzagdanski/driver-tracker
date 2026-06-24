@@ -12,6 +12,7 @@ function App() {
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
   }
+  
 
   return (
     <div>

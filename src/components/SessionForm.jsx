@@ -20,6 +20,9 @@ function SessionForm({ onAddSession }) {
         })
     }
     function addSession() {
+        if (!formData.hoursFrom || !formData.hoursTo || !formData.date || !formData.earnings) {
+            return;
+        }
         const newSession = {
             id: crypto.randomUUID(),
             ...formData

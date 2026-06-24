@@ -2,6 +2,10 @@ import { useState } from 'react'
 
 function SessionList({ sessions }) {
     function calculateHoursWorked(hoursFrom, hoursTo) {
+        if (!hoursFrom || !hoursTo) {
+            return 0;
+        }
+
         const startParts = hoursFrom.split(":");
         const endParts = hoursTo.split(":");
         const startHours = Number(startParts[0]);
@@ -18,12 +22,12 @@ function SessionList({ sessions }) {
         const hoursWorked = totalWorkedMinutes / 60;
         return hoursWorked;
     }
-    console.log("SessionList render", sessions);
     return (
         <div>
             <h2>Sessions</h2>
 
             {sessions.map((session) => {
+
                 const hoursWorked = calculateHoursWorked(
                     session.hoursFrom,
                     session.hoursTo
@@ -31,7 +35,7 @@ function SessionList({ sessions }) {
                 );
 
                 return <div key={session.id}>
-                    <p>{session.date} - {session.platform} -{hoursWorked}h - £{session.earnings}</p>
+                    <p>{session.date} - {session.platform} -  {hoursWorked.toFixed(2)}h - £{session.earnings}</p>
                 </div>
             })}
         </div>
