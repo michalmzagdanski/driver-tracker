@@ -10,7 +10,7 @@ function Stats({ stats }) {
             <p>Total sessions: {stats.totalSessions}</p>
             <p>Total hours worked: {stats.totalHoursWorked.toFixed(2)}h</p>
             <p>Total earnings: £{stats.totalEarnings.toFixed(2)}</p>
-            <p>EarningsPerHour: £{stats.earningsPerHour.toFixed(2)}</p>
+            <p>Earnings Per Hour: £{stats.earningsPerHour.toFixed(2)}</p>
 
         </div>
     )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import SessionForm from './components/SessionForm'
 import Stats from './components/Stats'
@@ -20,6 +20,20 @@ function App() {
     earningsPerHour
 
   }
+useEffect(() => {
+  if (sessions.length > 0) {
+    localStorage.setItem("sessions", JSON.stringify(sessions));
+  }
+}, [sessions]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sessions")
+
+    if (saved) {
+      setSessions(JSON.parse(saved))
+    }
+  }, [])
+
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
   }
