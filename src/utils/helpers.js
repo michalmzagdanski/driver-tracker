@@ -2,6 +2,7 @@ function calculateHoursWorked(hoursFrom, hoursTo) {
     if (!hoursFrom || !hoursTo) {
         return 0;
     }
+    
 
 
     const startParts = hoursFrom.split(":");
