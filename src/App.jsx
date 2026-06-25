@@ -20,11 +20,11 @@ function App() {
     earningsPerHour
 
   }
-useEffect(() => {
-  if (sessions.length > 0) {
-    localStorage.setItem("sessions", JSON.stringify(sessions));
-  }
-}, [sessions]);
+  useEffect(() => {
+    if (sessions.length > 0) {
+      localStorage.setItem("sessions", JSON.stringify(sessions));
+    }
+  }, [sessions]);
 
   useEffect(() => {
     const saved = localStorage.getItem("sessions")
@@ -37,13 +37,18 @@ useEffect(() => {
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
   }
+  function deleteSession(id) {
+    setSessions(
+      sessions.filter((session) => session.id !== id)
+    );
+  }
 
 
   return (
     <div>
       <h1>Private Driver Tracker</h1>
       <SessionForm onAddSession={addSession} />
-      <SessionList sessions={sessions} />
+      <SessionList sessions={sessions} deleteSession={deleteSession} />
       <Stats stats={stats} />
     </div>
   )
