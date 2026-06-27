@@ -7,6 +7,7 @@ import { calculateHoursWorked } from './utils/helpers'
 
 function App() {
   const [sessions, setSessions] = useState([])
+  const [editingSessionId, setEditingSessionId] = useState(null);
 
   const totalHoursWorked = sessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
@@ -19,6 +20,19 @@ function App() {
     totalEarnings,
     earningsPerHour
 
+  }
+
+  function addSession(newSession) {
+    setSessions(prevSessions => [...prevSessions, newSession])
+  }
+  function deleteSession(id) {
+    setSessions(
+      sessions.filter((session) => session.id !== id)
+    );
+  }
+
+  function startEditing(id) {
+    setEditingSessionId(id);
   }
   useEffect(() => {
     if (sessions.length > 0) {
@@ -34,21 +48,16 @@ function App() {
     }
   }, [])
 
-  function addSession(newSession) {
-    setSessions(prevSessions => [...prevSessions, newSession])
-  }
-  function deleteSession(id) {
-    setSessions(
-      sessions.filter((session) => session.id !== id)
-    );
-  }
 
 
   return (
     <div>
       <h1>Private Driver Tracker</h1>
       <SessionForm onAddSession={addSession} />
-      <SessionList sessions={sessions} deleteSession={deleteSession} />
+      <SessionList sessions={sessions}
+        deleteSession={deleteSession}
+        startEditing={startEditing}
+        editingSessionId={editingSessionId} />
       <Stats stats={stats} />
     </div>
   )
