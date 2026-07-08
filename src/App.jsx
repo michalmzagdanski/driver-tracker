@@ -27,13 +27,13 @@ function App() {
     setSessions(prevSessions => [...prevSessions, newSession])
   }
 
-function updateSession(updatedSession) {
-  setSessions(prevSessions =>
-    prevSessions.map((session) =>
-    session.id === updatedSession.id ? updatedSession : session)
-  )
-  setEditingSessionId(null);
-}
+  function updateSession(updatedSession) {
+    setSessions(prevSessions =>
+      prevSessions.map((session) =>
+        session.id === updatedSession.id ? updatedSession : session)
+    )
+    setEditingSessionId(null);
+  }
   function deleteSession(id) {
     setSessions(
       sessions.filter((session) => session.id !== id)
@@ -68,9 +68,12 @@ function updateSession(updatedSession) {
         startEditing={startEditing}
         editingSessionId={editingSessionId} />
       <Stats stats={stats} />
-      {editingSessionId !== null && <EditSessionForm updateSession={updateSession}
-        sessionToEdit={sessionToEdit} />}
+      {editingSessionId !== null && (<EditSessionForm
+        key={editingSessionId}
+        updateSession={updateSession}
+        sessionToEdit={sessionToEdit} />
 
+      )}
     </div>
   )
 }
