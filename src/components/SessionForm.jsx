@@ -28,7 +28,17 @@ function SessionForm({ onAddSession }) {
             ...formData
         }
 
-        onAddSession(newSession)
+        onAddSession(newSession);
+        setFormData({
+            date: "",
+            platform: "Uber",
+            hoursFrom: "",
+            hoursTo: "",
+            trips: "",
+            earnings: "",
+            millage: "",
+            consumption: ""
+        });
     }
 
     return (
@@ -36,7 +46,7 @@ function SessionForm({ onAddSession }) {
             <h2>Add Session</h2>
             <label>Date</label>
             <input type="date" value={formData.date} name="date" onChange={handleChange} />
-            <select id="Platform" value={formData.platform} name="platform" onChange={handleChange}>
+            <select id="platform" value={formData.platform} name="platform" onChange={handleChange}>
                 <option value="uber">Uber</option>
                 <option value="bolt">Bolt</option>
                 <option value="freenow">Freenow</option>
