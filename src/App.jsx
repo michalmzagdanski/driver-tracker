@@ -14,14 +14,21 @@ function App() {
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
   const earningsPerHour = totalHoursWorked > 0 ? totalEarnings / totalHoursWorked : 0
   const sessionToEdit = sessions.find((session) => editingSessionId === session.id)
+  const totalSessionCosts = sessions.reduce((acc, session)=> acc + Number(session.congestion)+Number(session.parking),0)
+  const totalNetProfit = totalEarnings - totalSessionCosts
+  const netEarningsPerHour = totalHoursWorked > 0 ? totalNetProfit / totalHoursWorked : 0
   const stats = {
 
     totalSessions: sessions.length,
     totalHoursWorked,
     totalEarnings,
-    earningsPerHour
+    earningsPerHour,
+    totalSessionCosts,
+    totalNetProfit,
+    netEarningsPerHour
 
   }
+
 
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
