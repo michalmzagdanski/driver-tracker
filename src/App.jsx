@@ -5,18 +5,28 @@ import Stats from './components/Stats'
 import SessionList from './components/SessionList'
 import { calculateHoursWorked } from './utils/helpers'
 import EditSessionForm from './components/EditSessionForm'
+import WeeklyCostForm from './components/WeeklyCostForm'
+import WeeklyCostList from './components/WeeklyCostList'
 
 function App() {
-  const [sessions, setSessions] = useState([])
-  const [editingSessionId, setEditingSessionId] = useState(null);
-
+  const [sessions, setSessions] = useState(() => {
+  const saved = localStorage.getItem("sessions");
+  return saved ? JSON.parse(saved) : [];
+});
+  const [editingSessionId, setEditingSessionId] = useState(null)
+  const [weeklyCosts, setWeeklyCosts] = useState(() => {
+  const saved = localStorage.getItem("weeklyCosts");
+  return saved ? JSON.parse(saved) : [];
+});
   const totalHoursWorked = sessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
   const earningsPerHour = totalHoursWorked > 0 ? totalEarnings / totalHoursWorked : 0
   const sessionToEdit = sessions.find((session) => editingSessionId === session.id)
-  const totalSessionCosts = sessions.reduce((acc, session)=> acc + Number(session.congestion)+Number(session.parking),0)
-  const totalNetProfit = totalEarnings - totalSessionCosts
+  const totalSessionCosts = sessions.reduce((acc, session) => acc + Number(session.congestion) + Number(session.parking), 0)
+  const totalWeeklyCosts = weeklyCosts.reduce((acc, weeklyCost) => acc + Number(weeklyCost.amount), 0)
+  const totalNetProfit = totalEarnings - totalSessionCosts - totalWeeklyCosts;
   const netEarningsPerHour = totalHoursWorked > 0 ? totalNetProfit / totalHoursWorked : 0
+
   const stats = {
 
     totalSessions: sessions.length,
@@ -24,6 +34,7 @@ function App() {
     totalEarnings,
     earningsPerHour,
     totalSessionCosts,
+    totalWeeklyCosts,
     totalNetProfit,
     netEarningsPerHour
 
@@ -32,6 +43,10 @@ function App() {
 
   function addSession(newSession) {
     setSessions(prevSessions => [...prevSessions, newSession])
+  }
+
+  function addWeeklyCost(newWeeklyCost) {
+    setWeeklyCosts(prevWeeklyCosts => [...prevWeeklyCosts, newWeeklyCost])
   }
 
   function updateSession(updatedSession) {
@@ -51,18 +66,17 @@ function App() {
     setEditingSessionId(id);
   }
   useEffect(() => {
-    if (sessions.length > 0) {
+     
       localStorage.setItem("sessions", JSON.stringify(sessions));
-    }
+    
   }, [sessions]);
-
+  
   useEffect(() => {
-    const saved = localStorage.getItem("sessions")
-
-    if (saved) {
-      setSessions(JSON.parse(saved))
+      localStorage.setItem("weeklyCosts", JSON.stringify(weeklyCosts));
     }
-  }, [])
+  , [weeklyCosts]);
+
+  
 
 
 
@@ -79,8 +93,9 @@ function App() {
         key={editingSessionId}
         updateSession={updateSession}
         sessionToEdit={sessionToEdit} />
-
       )}
+      <WeeklyCostForm onAddWeeklyCost={addWeeklyCost} />
+      <WeeklyCostList weeklyCosts={weeklyCosts} />
     </div>
   )
 }

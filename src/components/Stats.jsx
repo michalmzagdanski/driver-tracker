@@ -10,6 +10,7 @@ function Stats({ stats }) {
             <p>Earnings per hour: £{stats.earningsPerHour.toFixed(2)}</p>
             <h3>Net</h3>
             <p>Session Costs: £{stats.totalSessionCosts}</p>
+            <p>Weekly Costs: £{stats.totalWeeklyCosts}</p>
             <p>Net Profit: £{stats.totalNetProfit}</p>
             <p>Net Earnings Per Hour: £{stats.netEarningsPerHour.toFixed(2)}</p>
         </div>)
