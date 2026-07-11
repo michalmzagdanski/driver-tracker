@@ -7,24 +7,28 @@ import { calculateHoursWorked } from './utils/helpers'
 import EditSessionForm from './components/EditSessionForm'
 import WeeklyCostForm from './components/WeeklyCostForm'
 import WeeklyCostList from './components/WeeklyCostList'
+import EditWeeklyCostForm from './components/EditWeeklyCostForm'
 
 function App() {
   const [sessions, setSessions] = useState(() => {
-  const saved = localStorage.getItem("sessions");
-  return saved ? JSON.parse(saved) : [];
-});
+    const saved = localStorage.getItem("sessions");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [editingSessionId, setEditingSessionId] = useState(null)
   const [weeklyCosts, setWeeklyCosts] = useState(() => {
-  const saved = localStorage.getItem("weeklyCosts");
-  return saved ? JSON.parse(saved) : [];
-});
+    const saved = localStorage.getItem("weeklyCosts");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [editingWeeklyCostId, setEditingWeeklyCostId] = useState(null);
+
   const totalHoursWorked = sessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
   const earningsPerHour = totalHoursWorked > 0 ? totalEarnings / totalHoursWorked : 0
   const sessionToEdit = sessions.find((session) => editingSessionId === session.id)
+  const weeklyCostToEdit = weeklyCosts.find((weeklyCost) => editingWeeklyCostId === weeklyCost.id)
   const totalSessionCosts = sessions.reduce((acc, session) => acc + Number(session.congestion) + Number(session.parking), 0)
   const totalWeeklyCosts = weeklyCosts.reduce((acc, weeklyCost) => acc + Number(weeklyCost.amount), 0)
-  const totalNetProfit = totalEarnings - totalSessionCosts - totalWeeklyCosts;
+  const totalNetProfit = totalEarnings - totalSessionCosts - totalWeeklyCosts
   const netEarningsPerHour = totalHoursWorked > 0 ? totalNetProfit / totalHoursWorked : 0
 
   const stats = {
@@ -56,6 +60,15 @@ function App() {
     )
     setEditingSessionId(null);
   }
+
+  function updateWeeklyCost(updatedWeeklyCost) {
+    setWeeklyCosts(prevWeeklyCosts =>
+      prevWeeklyCosts.map((weeklyCost) =>
+        weeklyCost.id === updatedWeeklyCost.id ? updatedWeeklyCost : weeklyCost)
+    )
+    setEditingWeeklyCostId(null)
+  }
+
   function deleteSession(id) {
     setSessions(
       sessions.filter((session) => session.id !== id)
@@ -65,18 +78,21 @@ function App() {
   function startEditing(id) {
     setEditingSessionId(id);
   }
+  function startEditingWeeklyCost(id) {
+    setEditingWeeklyCostId(id)
+  }
   useEffect(() => {
-     
-      localStorage.setItem("sessions", JSON.stringify(sessions));
-    
-  }, [sessions]);
-  
-  useEffect(() => {
-      localStorage.setItem("weeklyCosts", JSON.stringify(weeklyCosts));
-    }
-  , [weeklyCosts]);
 
-  
+    localStorage.setItem("sessions", JSON.stringify(sessions));
+
+  }, [sessions]);
+
+  useEffect(() => {
+    localStorage.setItem("weeklyCosts", JSON.stringify(weeklyCosts));
+  }
+    , [weeklyCosts]);
+
+
 
 
 
@@ -89,13 +105,22 @@ function App() {
         startEditing={startEditing}
         editingSessionId={editingSessionId} />
       <Stats stats={stats} />
-      {editingSessionId !== null && (<EditSessionForm
-        key={editingSessionId}
-        updateSession={updateSession}
-        sessionToEdit={sessionToEdit} />
+      {editingSessionId !== null && (
+        <EditSessionForm
+          updateSession={updateSession}
+          sessionToEdit={sessionToEdit}
+        />
+      )}
+      {editingWeeklyCostId !== null && (
+        <EditWeeklyCostForm
+          updateWeeklyCost={updateWeeklyCost}
+          weeklyCostToEdit={weeklyCostToEdit}
+        />
       )}
       <WeeklyCostForm onAddWeeklyCost={addWeeklyCost} />
-      <WeeklyCostList weeklyCosts={weeklyCosts} />
+      <WeeklyCostList weeklyCosts={weeklyCosts}
+      startEditingWeeklyCost={startEditingWeeklyCost}
+      editingWeeklyCostId={editingWeeklyCostId} />
     </div>
   )
 }

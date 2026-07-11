@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState } from 'react'
 
 
 function EditSessionForm({ updateSession, sessionToEdit }) {
@@ -10,6 +10,9 @@ function EditSessionForm({ updateSession, sessionToEdit }) {
             [e.target.name]: e.target.value
         })
     }
+    useEffect(() => {
+        setEditingSession(sessionToEdit);
+    }, [sessionToEdit]);
 
     function handleSave() {
         updateSession(editingSession);
@@ -37,7 +40,7 @@ function EditSessionForm({ updateSession, sessionToEdit }) {
             <label>Congestion</label>
             <input type="number" value={editingSession.congestion} name="congestion" onChange={handleChange} />
             <label>Parking</label>
-            <input type="number" value={editingSession.parking} name="parking" onChange={handleChange}/>
+            <input type="number" value={editingSession.parking} name="parking" onChange={handleChange} />
             <button onClick={handleSave}>Save</button>
         </div>
     )
