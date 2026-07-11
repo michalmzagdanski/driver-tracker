@@ -73,6 +73,17 @@ function App() {
     setSessions(
       sessions.filter((session) => session.id !== id)
     );
+    if (editingSessionId === id) {
+      setEditingSessionId(null);
+    }
+  }
+  function deleteWeeklyCost(id) {
+    setWeeklyCosts(prevWeeklyCosts =>
+      prevWeeklyCosts.filter((weeklyCost) => weeklyCost.id !== id)
+    );
+    if (editingWeeklyCostId === id) {
+      setEditingWeeklyCostId(null);
+    }
   }
 
   function startEditing(id) {
@@ -119,8 +130,9 @@ function App() {
       )}
       <WeeklyCostForm onAddWeeklyCost={addWeeklyCost} />
       <WeeklyCostList weeklyCosts={weeklyCosts}
-      startEditingWeeklyCost={startEditingWeeklyCost}
-      editingWeeklyCostId={editingWeeklyCostId} />
+        startEditingWeeklyCost={startEditingWeeklyCost}
+        editingWeeklyCostId={editingWeeklyCostId}
+        deleteWeeklyCost={deleteWeeklyCost} />
     </div>
   )
 }
