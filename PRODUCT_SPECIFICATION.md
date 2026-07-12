@@ -273,3 +273,12 @@ Projekt tworzony jest przez aktywnego kierowcę Uber.
 Aplikacja będzie testowana podczas prawdziwej pracy.
 
 Nowe funkcje będą powstawały na podstawie realnego użytkowania aplikacji, a nie pomysłów z tutoriali.
+
+## Future Improvements
+
+### Vehicle Settings
+
+- Automatically calculate fuel/charging cost.
+- Store vehicle configuration.
+- Support multiple vehicles.
+- Different settings for EV / Petrol / Diesel.

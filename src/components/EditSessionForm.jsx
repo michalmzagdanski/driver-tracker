@@ -41,6 +41,8 @@ function EditSessionForm({ updateSession, sessionToEdit }) {
             <input type="number" value={editingSession.congestion} name="congestion" onChange={handleChange} />
             <label>Parking</label>
             <input type="number" value={editingSession.parking} name="parking" onChange={handleChange} />
+            <label>Fuel Cost</label>
+            <input type="number" value={editingSession.fuelCost} name="fuelCost" onChange={handleChange}/>
             <button onClick={handleSave}>Save</button>
         </div>
     )

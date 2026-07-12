@@ -10,8 +10,9 @@ function SessionForm({ onAddSession }) {
         trips: '',
         earnings: '',
         millage: '',
-        congestion: "",
-        parking: ""
+        congestion: '',
+        parking: '',
+        fuelCost: ''
 
     })
     function handleChange(e) {
@@ -21,7 +22,7 @@ function SessionForm({ onAddSession }) {
         })
     }
     function addSession() {
-        if (!formData.hoursFrom || !formData.hoursTo || !formData.date || !formData.earnings || !formData.millage || !formData.congestion || !formData.parking) {
+        if (!formData.hoursFrom || !formData.hoursTo || !formData.date || !formData.earnings || !formData.millage || !formData.congestion || !formData.parking || !formData.fuelCost) {
             return;
         }
         const newSession = {
@@ -39,7 +40,8 @@ function SessionForm({ onAddSession }) {
             earnings: "",
             millage: "",
             congestion: "",
-            parking: ""
+            parking: "",
+            fuelCost: ""
         });
     }
 
@@ -67,6 +69,8 @@ function SessionForm({ onAddSession }) {
             <input type="number" value={formData.congestion} name="congestion" onChange={handleChange} />
             <label>Parking</label>
             <input type="number" value={formData.parking} name="parking" onChange={handleChange}/>
+            <label>Fuel Cost</label>
+            <input type ="number" value={formData.fuelCost} name="fuelCost" onChange={handleChange}/>
             <button onClick={addSession}>Add session</button>
 
 

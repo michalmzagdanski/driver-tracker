@@ -26,7 +26,7 @@ function App() {
   const earningsPerHour = totalHoursWorked > 0 ? totalEarnings / totalHoursWorked : 0
   const sessionToEdit = sessions.find((session) => editingSessionId === session.id)
   const weeklyCostToEdit = weeklyCosts.find((weeklyCost) => editingWeeklyCostId === weeklyCost.id)
-  const totalSessionCosts = sessions.reduce((acc, session) => acc + Number(session.congestion) + Number(session.parking), 0)
+  const totalSessionCosts = sessions.reduce((acc, session) => acc + Number(session.congestion) + Number(session.parking) + Number(session.fuelCost), 0)
   const totalWeeklyCosts = weeklyCosts.reduce((acc, weeklyCost) => acc + Number(weeklyCost.amount), 0)
   const totalNetProfit = totalEarnings - totalSessionCosts - totalWeeklyCosts
   const netEarningsPerHour = totalHoursWorked > 0 ? totalNetProfit / totalHoursWorked : 0
