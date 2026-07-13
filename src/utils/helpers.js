@@ -2,7 +2,7 @@ function calculateHoursWorked(hoursFrom, hoursTo) {
     if (!hoursFrom || !hoursTo) {
         return 0;
     }
-    
+
 
 
     const startParts = hoursFrom.split(":");
@@ -21,4 +21,20 @@ function calculateHoursWorked(hoursFrom, hoursTo) {
     const hoursWorked = totalWorkedMinutes / 60;
     return hoursWorked;
 }
-export { calculateHoursWorked }
+
+function filterItemsByCurrentWeek(items) {
+    const today = new Date();
+    const daysFromMonday = today.getDay() === 0 ? 6 : today.getDay() - 1;
+    const monday = new Date(today)
+    monday.setDate(today.getDate() - daysFromMonday)
+    monday.setHours(0, 0, 0, 0)
+    const sunday = new Date(monday)
+    sunday.setDate(monday.getDate() + 6)
+    sunday.setHours(23, 59, 59, 999)
+    return items.filter((item) =>{
+        const itemDate = new Date(item.date)
+        return itemDate>= monday && itemDate<= sunday
+    })
+}
+
+export { calculateHoursWorked, filterItemsByCurrentWeek }
