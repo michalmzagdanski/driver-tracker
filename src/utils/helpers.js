@@ -22,8 +22,8 @@ function calculateHoursWorked(hoursFrom, hoursTo) {
     return hoursWorked;
 }
 
-function filterItemsByCurrentWeek(items) {
-    const today = new Date();
+function filterItemsByWeek(items, referenceDate) {
+    const today = referenceDate;
     const daysFromMonday = today.getDay() === 0 ? 6 : today.getDay() - 1;
     const monday = new Date(today)
     monday.setDate(today.getDate() - daysFromMonday)
@@ -37,4 +37,24 @@ function filterItemsByCurrentWeek(items) {
     })
 }
 
-export { calculateHoursWorked, filterItemsByCurrentWeek }
+function getFilteredSessions(sessions, filterMode, filterDate) {
+    if (filterMode === "all")
+      return sessions;
+    if (filterMode === "day") {
+      if (filterDate === "") {
+        return sessions
+      }
+      return sessions.filter((session) => session.date === filterDate
+      )
+    }
+    if (filterMode === "week") {
+      if (filterDate === "") {
+        return sessions
+      }
+
+      return filterItemsByWeek(sessions, new Date(filterDate))
+    }
+    return sessions
+  }
+
+export { calculateHoursWorked, filterItemsByWeek, getFilteredSessions }

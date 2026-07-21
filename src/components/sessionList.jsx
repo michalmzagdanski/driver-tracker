@@ -1,13 +1,38 @@
 import { useState } from 'react'
-import { calculateHoursWorked } from '../utils/helpers'
+import { calculateHoursWorked, getFilteredSessions } from '../utils/helpers'
 
-function SessionList({ sessions, deleteSession, startEditing, editingSessionId }) {
+function SessionList({ sessions,
+    deleteSession,
+    startEditing,
+    editingSessionId,
+    filterMode,
+    filterDate,
+    setFilterMode,
+    setFilterDate
+     }) {
+        const filteredSessions = getFilteredSessions(
+  sessions,
+  filterMode,
+  filterDate
+)
+        
 
     return (
+        
         <div>
+            <div>
+                <button onClick={() => setFilterMode("all")} className={filterMode === "all" ? "active" : ""}>All</button>
+                <button onClick={() => setFilterMode("day")} className={filterMode === "day" ? "active" : ""}>Day</button>
+                <button onClick={() => setFilterMode("week")} className={filterMode === "week" ? "active" : ''}>Week</button>
+                {(filterMode === "day" || filterMode === "week") &&
+                    <input
+                        type="date"
+                        value={filterDate}
+                        onChange={(e) => setFilterDate(e.target.value)} />
+                }            </div>
             <h2>Sessions</h2>
 
-            {sessions.map((session) => {
+            {filteredSessions.map((session) => {
 
                 const hoursWorked = calculateHoursWorked(
                     session.hoursFrom,

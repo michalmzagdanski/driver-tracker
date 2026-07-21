@@ -3,7 +3,7 @@ import './App.css'
 import SessionForm from './components/SessionForm'
 import Stats from './components/Stats'
 import SessionList from './components/SessionList'
-import { calculateHoursWorked, filterItemsByCurrentWeek } from './utils/helpers'
+import { calculateHoursWorked, filterItemsByWeek, getFilteredSessions } from './utils/helpers'
 import EditSessionForm from './components/EditSessionForm'
 import WeeklyCostForm from './components/WeeklyCostForm'
 import WeeklyCostList from './components/WeeklyCostList'
@@ -20,6 +20,8 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [editingWeeklyCostId, setEditingWeeklyCostId] = useState(null);
+  const [filterMode, setFilterMode] = useState("all")
+  const [filterDate, setFilterDate] = useState("")
 
   const totalHoursWorked = sessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
@@ -30,13 +32,14 @@ function App() {
   const totalWeeklyCosts = weeklyCosts.reduce((acc, weeklyCost) => acc + Number(weeklyCost.amount), 0)
   const totalNetProfit = totalEarnings - totalSessionCosts - totalWeeklyCosts
   const netEarningsPerHour = totalHoursWorked > 0 ? totalNetProfit / totalHoursWorked : 0
-  const weekSessions = filterItemsByCurrentWeek(sessions)
-  const currentWeekCosts = filterItemsByCurrentWeek(weeklyCosts)
+  const weekSessions = filterItemsByWeek(sessions, new Date())
+  const currentWeekCosts = filterItemsByWeek(weeklyCosts, new Date())
   const weeklyEarnings = weekSessions.reduce((total, session) => total + Number(session.earnings), 0)
   const weeklyHours = weekSessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const weeklySessionCost = weekSessions.reduce((acc, session) => acc + Number(session.congestion) + Number(session.parking) + Number(session.fuelCost), 0)
   const weeklyTotalCosts = currentWeekCosts.reduce((total, weeklyCost) => total + Number(weeklyCost.amount), 0)
   const weeklyNetProfit = weeklyEarnings - weeklySessionCost - weeklyTotalCosts
+  const filteredSessions = getFilteredSessions(sessions, filterMode, filterDate)
 
   const stats = {
 
@@ -105,6 +108,7 @@ function App() {
   function startEditingWeeklyCost(id) {
     setEditingWeeklyCostId(id)
   }
+  
   useEffect(() => {
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
@@ -124,10 +128,14 @@ function App() {
     <div>
       <h1>Private Driver Tracker</h1>
       <SessionForm onAddSession={addSession} />
-      <SessionList sessions={sessions}
+      <SessionList sessions={filteredSessions}
         deleteSession={deleteSession}
         startEditing={startEditing}
-        editingSessionId={editingSessionId} />
+        editingSessionId={editingSessionId}
+        filterMode={filterMode}
+        filterDate={filterDate}
+        setFilterMode={setFilterMode}
+        setFilterDate={setFilterDate} />
       <Stats stats={stats} />
       {editingSessionId !== null && (
         <EditSessionForm
