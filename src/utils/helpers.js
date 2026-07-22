@@ -31,30 +31,76 @@ function filterItemsByWeek(items, referenceDate) {
     const sunday = new Date(monday)
     sunday.setDate(monday.getDate() + 6)
     sunday.setHours(23, 59, 59, 999)
-    return items.filter((item) =>{
+    return items.filter((item) => {
         const itemDate = new Date(item.date)
-        return itemDate>= monday && itemDate<= sunday
+        return itemDate >= monday && itemDate <= sunday
     })
 }
 
-function getFilteredSessions(sessions, filterMode, filterDate) {
+function getFilteredSessions(sessions, filterMode, filterDate, ) {
     if (filterMode === "all")
-      return sessions;
+        return sessions;
     if (filterMode === "day") {
-      if (filterDate === "") {
-        return sessions
-      }
-      return sessions.filter((session) => session.date === filterDate
-      )
+        if (filterDate === "") {
+            return sessions
+        }
+        return sessions.filter((session) => session.date === filterDate
+        )
     }
     if (filterMode === "week") {
-      if (filterDate === "") {
-        return sessions
-      }
+        if (filterDate === "") {
+            return sessions
+        }
 
-      return filterItemsByWeek(sessions, new Date(filterDate))
+        return filterItemsByWeek(sessions, new Date(filterDate))
     }
     return sessions
-  }
+}
 
-export { calculateHoursWorked, filterItemsByWeek, getFilteredSessions }
+function getSortedSessions(sessions, sortMode) {
+    const sortedSessions = [...sessions]
+
+    if (sortMode === "newest" || sortMode === "oldest") {
+
+        sortedSessions.sort((sessionA, sessionB) => {
+            const dateA = new Date(sessionA.date)
+            const dateB = new Date(sessionB.date)
+            if (sortMode === "newest") {
+                return dateB - dateA
+            }
+            else {
+                return dateA - dateB
+            }
+
+        })
+    }
+    if (sortMode === "highestEarnings" || sortMode === "lowestEarnings") {
+        sortedSessions.sort((sessionA, sessionB) => {
+
+            if (sortMode === "highestEarnings") {
+                return sessionB.earnings - sessionA.earnings
+            }
+            else {
+                return sessionA.earnings - sessionB.earnings
+            }
+        })
+    }
+    if (sortMode === "highestNetProfit" || sortMode === "lowestNetProfit") {
+        sortedSessions.sort((sessionA, sessionB) => {
+            const netProfitA = sessionA.earnings - sessionA.congestion - sessionA.parking - sessionA.fuelCost
+            const netProfitB = sessionB.earnings - sessionB.congestion - sessionB.parking - sessionB.fuelCost
+            if (sortMode === "highestNetProfit") {
+                return netProfitB - netProfitA
+            }
+            else {
+                return netProfitA - netProfitB
+            }
+        })
+    }
+
+
+
+    return sortedSessions
+}
+
+export { calculateHoursWorked, filterItemsByWeek, getFilteredSessions, getSortedSessions }

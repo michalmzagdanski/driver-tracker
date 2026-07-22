@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { calculateHoursWorked, getFilteredSessions } from '../utils/helpers'
+import { calculateHoursWorked,  } from '../utils/helpers'
 
 function SessionList({ sessions,
     deleteSession,
@@ -8,19 +8,17 @@ function SessionList({ sessions,
     filterMode,
     filterDate,
     setFilterMode,
-    setFilterDate
-     }) {
-        const filteredSessions = getFilteredSessions(
-  sessions,
-  filterMode,
-  filterDate
-)
-        
+    setFilterDate,
+    sortMode,
+    setSortMode
+}) {
+
 
     return (
-        
+
         <div>
             <div>
+                <span>Filter By:</span>
                 <button onClick={() => setFilterMode("all")} className={filterMode === "all" ? "active" : ""}>All</button>
                 <button onClick={() => setFilterMode("day")} className={filterMode === "day" ? "active" : ""}>Day</button>
                 <button onClick={() => setFilterMode("week")} className={filterMode === "week" ? "active" : ''}>Week</button>
@@ -30,9 +28,20 @@ function SessionList({ sessions,
                         value={filterDate}
                         onChange={(e) => setFilterDate(e.target.value)} />
                 }            </div>
+                <div>
+                    <span>Sort By:</span>
+                    <select value={sortMode} onChange={(e) => setSortMode(e.target.value)}>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="highestEarnings">Highest Earnings</option>
+                        <option value="lowestEarnings">Lowest Earnings</option>
+                        <option value="highestNetProfit">Highest Net Profit</option>
+                        <option value="lowestNetProfit">Lowest Net Profit</option>
+                    </select>
+                </div>
             <h2>Sessions</h2>
 
-            {filteredSessions.map((session) => {
+            {sessions.map((session) => {
 
                 const hoursWorked = calculateHoursWorked(
                     session.hoursFrom,
@@ -45,6 +54,7 @@ function SessionList({ sessions,
                     {editingSessionId === session.id && <p>Editing...</p>}
                     <button onClick={() => deleteSession(session.id)}>Delete</button>
                     <button onClick={() => startEditing(session.id)}>Edit</button>
+                
                 </div>
             })}
         </div>

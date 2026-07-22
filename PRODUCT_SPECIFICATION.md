@@ -1,284 +1,284 @@
-# 🚗 Private Driver Tracker
+  Private Driver Tracker
 
-# Specyfikacja Produktu v1.0
+Product Specification v1.0
 
-## 🎯 Cel projektu
+ Project Goal
 
-Stworzenie aplikacji, która pomaga kierowcom platform (Uber / Bolt / FreeNow) zrozumieć, ile **naprawdę** zarabiają po odliczeniu wszystkich kosztów prowadzenia działalności.
+Create an application that helps ride-hailing drivers (Uber / Bolt / FreeNow) understand how much they actually earn after deducting all operating costs.
 
-Aplikacja nie ma być tylko projektem do portfolio.
+The application is not intended to be only a portfolio project.
 
-Ma być narzędziem, którego będę używał podczas swojej pracy jako kierowca Uber.
+It should be a tool that I will use while working as an Uber driver.
 
-Każda nowa funkcja będzie rozwijana na podstawie realnych doświadczeń z użytkowania aplikacji.
+Every new feature will be developed based on real experience gained from using the application.
 
----
+⸻
 
-# 👤 Użytkownik
+ User
 
-Docelowym użytkownikiem jest kierowca platform:
+The target user is a ride-hailing driver working with:
 
-- Uber
-- Bolt
-- FreeNow
+* Uber
+* Bolt
+* FreeNow
 
-Aplikacja powinna działać zarówno dla osób jeżdżących tylko na jednej platformie, jak i kilku jednocześnie.
+The application should work both for drivers using a single platform and for those using multiple platforms at the same time.
 
----
+⸻
 
-# ⭐ Główna zasada aplikacji
+ Core Product Principle
 
-Aplikacja ma **oszczędzać czas użytkownika**, a nie dokładać mu pracy.
+The application should save the user time, not create additional work.
 
-Dodanie jednej sesji powinno zajmować maksymalnie około **2 minut**.
+Adding a single session should take no more than approximately 2 minutes.
 
-Każde nowe pole formularza musi mieć realną wartość.
+Every new form field must provide real value.
 
----
+⸻
 
-# 🏗 Model danych
+ Data Model
 
-## 1. Sesja
+1. Session
 
-Dodawana po każdej zakończonej zmianie.
+Added after each completed shift.
 
-Pola:
+Fields:
 
-- Data
-- Platforma
-- Godzina rozpoczęcia
-- Godzina zakończenia
-- Liczba kursów
-- Zarobek brutto (Gross Earnings)
-- Dystans
-- Koszt paliwa / ładowania
-- Congestion Charge
-- Parking
+* Date
+* Platform
+* Start time
+* End time
+* Number of trips
+* Gross earnings
+* Distance
+* Fuel / charging cost
+* Congestion Charge
+* Parking
 
-Automatycznie wyliczane:
+Calculated automatically:
 
-- Liczba przepracowanych godzin
-- Zarobek na godzinę
-- Koszty sesji
-- Zysk netto z sesji
+* Total hours worked
+* Earnings per hour
+* Session costs
+* Net profit from the session
 
----
+⸻
 
-## 2. Koszty tygodniowe
+2. Weekly Costs
 
-Dodawane raz w tygodniu.
+Added once per week.
 
-Przykłady:
+Examples:
 
-- Wynajem auta
-- Myjnia
-- Mandaty
+* Vehicle rental
+* Car wash
+* Fines
 
-Powód:
+Reason:
 
-Są to koszty, które zmieniają się z tygodnia na tydzień.
+These costs may change from week to week.
 
----
+⸻
 
-## 3. Koszty miesięczne
+3. Monthly Costs
 
-Dodawane raz w miesiącu.
+Added once per month.
 
-Przykłady:
+Examples:
 
-- Ubezpieczenie
-- Telefon
-- Serwis
-- Opony
+* Insurance
+* Phone
+* Servicing
+* Tyres
 
-Powód:
+Reason:
 
-Nie dotyczą jednej sesji ani jednego tygodnia.
+They are not associated with a single session or a single week.
 
----
+⸻
 
-## 4. Ustawienia (Future)
+4. Settings (Future)
 
-Użytkownik konfiguruje tylko raz.
+Configured once by the user.
 
-Przykłady:
+Examples:
 
-- Waluta
-- Mile / Kilometry
-- Rodzaj paliwa
-- Stawka podatku (%)
-- Podstawa naliczania podatku
+* Currency
+* Miles / kilometres
+* Fuel type
+* Tax rate (%)
+* Tax calculation basis
 
----
+⸻
 
-# 💰 Model finansowy
+ Financial Model
 
-## Sesja
+Session
 
-Zarobek brutto
-
-↓
-
-Koszty sesji
+Gross earnings
 
 ↓
 
-Zysk netto z sesji
-
----
-
-## Tydzień
-
-Suma zarobków brutto
+Session costs
 
 ↓
 
-Koszty tygodniowe
+Net profit from the session
+
+⸻
+
+Week
+
+Total gross earnings
 
 ↓
 
-Zysk netto tygodnia
-
----
-
-## Miesiąc
-
-Suma zysków tygodniowych
+Weekly costs
 
 ↓
 
-Koszty miesięczne
+Weekly net profit
+
+⸻
+
+Month
+
+Total weekly profits
 
 ↓
 
-Szacowany podatek
+Monthly costs
 
 ↓
 
-Końcowy zysk
+Estimated tax
 
----
+↓
 
-# 📊 Dashboard
+Final profit
 
-Dashboard powinien odpowiadać na jedno pytanie:
+⸻
 
-> **Ile pieniędzy naprawdę zarobiłem?**
+ Dashboard
 
-Wyświetlane dane:
+The dashboard should answer one question:
 
-- Zarobek brutto
-- Koszty sesji
-- Koszty tygodniowe
-- Łączne koszty
-- Zysk przed podatkiem
-- Szacowany podatek (Future)
-- Końcowy zysk netto (Future)
-- Zarobek brutto na godzinę
-- Zarobek netto na godzinę
+How much money did I actually earn?
 
----
+Displayed data:
 
-# ❌ Funkcje, których NIE dodajemy
+* Gross earnings
+* Session costs
+* Weekly costs
+* Total costs
+* Profit before tax
+* Estimated tax (Future)
+* Final net profit (Future)
+* Gross earnings per hour
+* Net earnings per hour
 
-Świadomie rezygnujemy z:
+⸻
 
-- Notatek
-- Komentarzy
-- Opisów dnia
-- Ocen dnia
+ Features We Will NOT Add
 
-Powód:
+We intentionally exclude:
 
-Nie zwiększają wartości aplikacji, a wydłużają czas dodawania sesji.
+* Notes
+* Comments
+* Daily descriptions
+* Daily ratings
 
----
+Reason:
 
-# ✅ Zasady projektowe
+They do not increase the value of the application and make adding a session take longer.
 
-Każda nowa funkcja musi spełniać przynajmniej jeden warunek:
+⸻
 
-1. Dawać realną wartość użytkownikowi.
+ Design Principles
 
-LUB
+Every new feature must satisfy at least one condition:
 
-2. Uczyć ważnej technologii React / JavaScript.
+1. Provide real value to the user.
 
-Jeżeli nie spełnia żadnego z nich — nie dodajemy jej.
+OR
 
----
+2. Teach an important React / JavaScript concept.
 
-# 🚀 Roadmap MVP
+If it satisfies neither condition, we do not add it.
 
-## Etap 1 (Obecnie)
+⸻
 
-- CRUD
-- LocalStorage
-- Edycja sesji
-- Statystyki
-- Koszty sesji
-- Zysk netto z sesji
+ MVP Roadmap
 
----
+Stage 1 (Current)
 
-## Etap 2
+* CRUD
+* LocalStorage
+* Session editing
+* Statistics
+* Session costs
+* Net profit from a session
 
-- Koszty tygodniowe
-- Dashboard tygodniowy
-- Filtrowanie
-- Sortowanie
+⸻
 
----
+Stage 2
 
-## Etap 3
+* Weekly costs
+* Weekly dashboard
+* Filtering
+* Sorting
 
-- Responsywność
-- Wykres
-- README
-- Dopracowanie UI
+⸻
 
----
+Stage 3
 
-## Etap 4
+* Responsive design
+* Chart
+* README
+* UI refinement
 
-- Projekt z API
-- TypeScript
-- Git Workflow
-- Portfolio
-- Aplikowanie o pracę
+⸻
 
----
+Stage 4
 
-# 👨‍💻 Zasady pracy nad projektem
+* API-based project
+* TypeScript
+* Git workflow
+* Portfolio
+* Job applications
 
-Przed napisaniem kodu zawsze odpowiadamy na pytania:
+⸻
 
-1. Jaki problem rozwiązujemy?
-2. Jakie dane będą potrzebne?
-3. Który komponent jest właścicielem state?
-4. Jak będą przepływać dane?
-5. Jakie funkcje będą potrzebne?
-6. Dopiero wtedy piszemy kod.
+ Project Development Rules
 
-Najpierw myślenie.
+Before writing code, we always answer the following questions:
 
-Potem React.
+1. What problem are we solving?
+2. What data will be required?
+3. Which component owns the state?
+4. How will the data flow?
+5. Which functions will be required?
+6. Only then do we write the code.
 
----
+Think first.
 
-# 📝 Historia projektu
+React second.
 
-Projekt tworzony jest przez aktywnego kierowcę Uber.
+⸻
 
-Aplikacja będzie testowana podczas prawdziwej pracy.
+ Project History
 
-Nowe funkcje będą powstawały na podstawie realnego użytkowania aplikacji, a nie pomysłów z tutoriali.
+The project is being created by an active Uber driver.
 
-## Future Improvements
+The application will be tested during real work.
 
-### Vehicle Settings
+New features will be based on actual use of the application, not on ideas taken from tutorials.
 
-- Automatically calculate fuel/charging cost.
-- Store vehicle configuration.
-- Support multiple vehicles.
-- Different settings for EV / Petrol / Diesel.
+Future Improvements
+
+Vehicle Settings
+
+* Automatically calculate fuel / charging cost.
+* Store vehicle configuration.
+* Support multiple vehicles.
+* Provide different settings for EV / petrol / diesel vehicles.

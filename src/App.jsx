@@ -3,7 +3,7 @@ import './App.css'
 import SessionForm from './components/SessionForm'
 import Stats from './components/Stats'
 import SessionList from './components/SessionList'
-import { calculateHoursWorked, filterItemsByWeek, getFilteredSessions } from './utils/helpers'
+import { calculateHoursWorked, filterItemsByWeek, getFilteredSessions, getSortedSessions } from './utils/helpers'
 import EditSessionForm from './components/EditSessionForm'
 import WeeklyCostForm from './components/WeeklyCostForm'
 import WeeklyCostList from './components/WeeklyCostList'
@@ -22,6 +22,7 @@ function App() {
   const [editingWeeklyCostId, setEditingWeeklyCostId] = useState(null);
   const [filterMode, setFilterMode] = useState("all")
   const [filterDate, setFilterDate] = useState("")
+  const [sortMode, setSortMode] = useState("newest")
 
   const totalHoursWorked = sessions.reduce((total, session) => total + calculateHoursWorked(session.hoursFrom, session.hoursTo), 0)
   const totalEarnings = sessions.reduce((total, session) => total + Number(session.earnings), 0)
@@ -40,6 +41,7 @@ function App() {
   const weeklyTotalCosts = currentWeekCosts.reduce((total, weeklyCost) => total + Number(weeklyCost.amount), 0)
   const weeklyNetProfit = weeklyEarnings - weeklySessionCost - weeklyTotalCosts
   const filteredSessions = getFilteredSessions(sessions, filterMode, filterDate)
+  const sortedSessions = getSortedSessions(filteredSessions, sortMode)
 
   const stats = {
 
@@ -108,7 +110,7 @@ function App() {
   function startEditingWeeklyCost(id) {
     setEditingWeeklyCostId(id)
   }
-  
+
   useEffect(() => {
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
@@ -128,14 +130,16 @@ function App() {
     <div>
       <h1>Private Driver Tracker</h1>
       <SessionForm onAddSession={addSession} />
-      <SessionList sessions={filteredSessions}
+      <SessionList sessions={sortedSessions}
         deleteSession={deleteSession}
         startEditing={startEditing}
         editingSessionId={editingSessionId}
         filterMode={filterMode}
         filterDate={filterDate}
         setFilterMode={setFilterMode}
-        setFilterDate={setFilterDate} />
+        setFilterDate={setFilterDate}
+        sortMode={sortMode}
+        setSortMode={setSortMode} />
       <Stats stats={stats} />
       {editingSessionId !== null && (
         <EditSessionForm
